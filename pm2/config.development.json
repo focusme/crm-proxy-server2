@@ -3,6 +3,7 @@
   "max_memory_restart": "300M",
   "script"      : "./src/app.js",
   "watch"       : true,
+  "ignore_watch" : ["node_modules", "*.md","*.json"],
   "env": {
       "NODE_ENV": "development"
   }
