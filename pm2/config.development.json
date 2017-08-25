@@ -1,0 +1,9 @@
+[{
+  "name"        : "koa2-dev",
+  "max_memory_restart": "300M",
+  "script"      : "./src/app.js",
+  "watch"       : true,
+  "env": {
+      "NODE_ENV": "development"
+  }
+}]

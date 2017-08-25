@@ -4,7 +4,31 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "pm2 start ./pm2/config.development.json",
+    "start": "pm2 start ./pm2/config.production.json"
+  },
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.2",
+    "co-body": "",
+    "highlight.js": "^9.11.0",
+    "http-proxy": "",
+    "jsonwebtoken": "^7.4.1",
+    "koa": ">=2.2.x",
+    "koa-cors": "",
+    "koa-router": ">=7.x.x",
+    "markdown-it": "^8.3.1",
+    "md5": "^2.2.1",
+    "node-fetch": "",
+    "node-smushit": "0.5.1",
+    "nodemailer": "4.0.1",
+    "octokat": "^0.8.0",
+    "promise-mysql": "^3.0.0",
+    "querystringify": "^1.0.0",
+    "request": "^2.81.0"
+  },
+  "devDependencies": {
+    "cross-env": "^5.0.1",
+    "pm2":""
   },
   "author": "",
   "license": "ISC"

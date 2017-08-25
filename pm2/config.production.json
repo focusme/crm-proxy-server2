@@ -1,0 +1,8 @@
+[{
+  "name"        : "koa2-release",
+  "script"      : "../src/app.js",
+  "watch"       : false,
+  "env": {
+      "NODE_ENV": "production"
+  }
+}]
