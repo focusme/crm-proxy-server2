@@ -16,6 +16,7 @@
     "koa": ">=2.2.x",
     "koa-cors": "",
     "koa-router": ">=7.x.x",
+    "koa-convert":"^1.2.0",
     "markdown-it": "^8.3.1",
     "md5": "^2.2.1",
     "node-fetch": "",

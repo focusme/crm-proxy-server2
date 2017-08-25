@@ -15,5 +15,8 @@ let config = {
 
 module.exports = {
    port: 8000,
+
+   key: 'XXXXXX', //开发务必修改
+   
    sqlConfig: config[process.env.NODE_ENV || "development"].sqlConfig
 }

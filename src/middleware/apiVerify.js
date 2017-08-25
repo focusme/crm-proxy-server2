@@ -1,4 +1,10 @@
 //api 验证
+const fs = require('fs');
+const path = require('path')
+// 读取文件
+function readFile(file){
+  return fs.readFileSync(path.resolve(__dirname, file))
+}
 
 module.exports = async function(ctx,next){
 
@@ -25,7 +31,7 @@ module.exports = async function(ctx,next){
   }
 
   //拦截 favicon.ico
-  if(ctx.path === '/favicon.ico'){ctx.throw(404); return;}
+  if(ctx.path === '/favicon.ico'){ctx.type = 'image/png';ctx.body= readFile('../../static/logo.jpg'); return;}
 
   await next();
 

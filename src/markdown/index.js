@@ -1,6 +1,5 @@
 const MarkdownIt =require('markdown-it');
 const linkTarget = require('./linkTargetPlugin')
-
 var hljs = require('highlight.js'); // https://highlightjs.org/
 
 let md = new MarkdownIt({
@@ -27,32 +26,5 @@ let md = new MarkdownIt({
 }).use(linkTarget);
 
 module.exports = function(text) {
-  // if(marked) {
-  //   // Initialize
-  //   // var markedOptions = {};
-  //   //
-  //   //
-  //   // // Update options
-  //   // if(this.options && this.options.renderingConfig && this.options.renderingConfig.singleLineBreaks === false) {
-  //   //   markedOptions.breaks = false;
-  //   // } else {
-  //   //   markedOptions.breaks = true;
-  //   // }
-  //   //
-  //   // if(this.options && this.options.renderingConfig && this.options.renderingConfig.codeSyntaxHighlighting === true && window.hljs) {
-  //   //   markedOptions.highlight = function(code) {
-  //   //     return window.hljs.highlightAuto(code).value;
-  //   //   };
-  //   // }
-  //   //
-  //   //
-  //   // // Set options
-  //   // marked.setOptions(markedOptions);
-  //
-  //
-  //   // Return
-  //   return marked(text);
-  // }
-
   return md.render(text+'')
 };

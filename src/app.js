@@ -2,6 +2,7 @@ const Koa = require('koa');
 const Router = require('koa-router');
 const app = new Koa();
 const cors = require('koa-cors');
+const convert = require('koa-convert')
 const ApiRouter = new Router();
 const config = require('./config.js')
 
@@ -14,7 +15,10 @@ const loginVerify = require('./middleware/loginVerify')
 const proxy = require('./middleware/proxy.js')
 
 // 跨域处理
-app.use(cors());
+app.use(convert(cors({
+  origin:'',
+  methods:['GET', 'POST']
+})));
 
 app.use(logger);
 app.use(parse);
@@ -24,11 +28,11 @@ app.use(apiVerify)
 app.use(changeBody)
 
 
-// app.use(ApiRouter.routes());
 
 
 app.on('error', function(err) {
-    console.log(err, 'app');
+    console.log('error: ');
+    console.log(err);
 });
 
 app.listen(config.port, function() {
