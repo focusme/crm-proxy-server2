@@ -10,7 +10,7 @@ module.exports = async function(ctx,next){
 
   // 获取cookie key
   ctx.getCookie = function(key, encode){
-    let str = this.url.indexOf('file') > 0 ? this.request.header.token : this.request.header.cookie
+    let str = this.request.header.cookie
     let data = null
     try {
       let cookie = str ? JSON.parse(unescape(str)) : {}
@@ -31,7 +31,7 @@ module.exports = async function(ctx,next){
   }
 
   //拦截 favicon.ico
-  if(ctx.path === '/favicon.ico'){ctx.type = 'image/png';ctx.body= readFile('../../static/logo.jpg'); return;}
+  if(ctx.path === '/favicon.ico'){ctx.body={}; return;}
 
   await next();
 

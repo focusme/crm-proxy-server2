@@ -19,7 +19,7 @@
   yarn install
   <!-- 开发 -->
   yarn run dev
-  <!-- 正式环境 -->
-  yarn run start
-  
+  <!-- 打包 -->
+  yarn build
+
 ```
