@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "node ./pm2/index.js",
+    "dev": "node ./tools/run.js && node ./tools/run.js",
     "build": "babel-node ./tools/clean.js && babel-node ./tools/build.js -- --release && babel-node ./tools/copy.js"
   },
   "dependencies": {

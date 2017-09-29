@@ -1,11 +1,13 @@
 const webpack = require('webpack');
 const path = require('path')
 const nodeExternals = require('webpack-node-externals')
-
-module.exports = {
+let DEV = true
+if (process.argv.includes('--release')) {
+   DEV = false
+}
+config =  {
     entry: {
-        app: ["babel-polyfill", path.resolve(__dirname, '../src/app.js')],
-        start: path.resolve(__dirname, '../pm2/index.js')
+        app: ["babel-polyfill", path.resolve(__dirname, '../src/app.js')]
     },
     target: 'node',
     output: {
@@ -38,9 +40,17 @@ module.exports = {
         ]
     },
     plugins: [
-        new webpack.optimize.UglifyJsPlugin(),
+        ...(DEV ? [] : [
+          new webpack.optimize.UglifyJsPlugin(),
+        ]),
         new webpack.DefinePlugin({
-            'process.env.NODE_ENV': '"production"'
+            'process.env.NODE_ENV':DEV ? '"development"' :'"production"',
+            __DEV__: DEV
         }),
     ]
 };
+if(!DEV){
+   config.entry.start = path.resolve(__dirname, '../pm2/index.js')
+}
+
+module.exports = config

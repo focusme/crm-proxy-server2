@@ -14,7 +14,7 @@ let config = {
 }
 
 module.exports = {
-   port: 8000,
+   port: 9090,
 
    key: 'XXXXXX', //开发务必修改
 

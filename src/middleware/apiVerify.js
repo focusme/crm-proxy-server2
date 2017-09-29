@@ -27,7 +27,10 @@ module.exports = async function(ctx,next){
 
   // log
   ctx.logger = function(){
-    process.env.NODE_ENV !== 'production' && console.log(...arguments)
+    if(__DEV__){
+          console.log(...arguments)
+    }
+
   }
 
   //拦截 favicon.ico
