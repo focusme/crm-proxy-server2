@@ -1,6 +1,11 @@
 var pm2 = require('pm2');
+const config = require(`./config`)
 
-const config = require(`./config.${process.env.NODE_ENV || 'development'}`)
+/**
+ * 启动pm2
+ * @param  {[type]} err [description]
+ * @return {[type]}     [description]
+ */
 pm2.connect(function(err) {
   if (err) {
     console.error(err);

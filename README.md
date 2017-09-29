@@ -14,12 +14,18 @@
 
 ## 开发
 
-```cmd
-  <!-- 安装依赖 -->
-  yarn install
-  <!-- 开发 -->
-  yarn run dev
-  <!-- 打包 -->
-  yarn build
+- 安装依赖 yarn install
 
-```
+- 项目启动 yarn run dev
+
+- 浏览器访问 http://localhost:9090/
+
+## 生产环境(项目使用pm2启动，可以修改pm2目录下config)
+
+- 打包 yarn build
+
+- 上传build目录下的所有文件
+
+- 安装依赖 yarn install
+
+- 项目启动 yarn run start
