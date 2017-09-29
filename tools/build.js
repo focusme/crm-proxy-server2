@@ -22,5 +22,4 @@ webpack(webpackConfig).run((err, stats) => {
   }) + '\n\n')
 
   console.log(`${format(new Date())}  Finished build`);
-
 });

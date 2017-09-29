@@ -5,7 +5,11 @@ let DEV = true
 if (process.argv.includes('--release')) {
    DEV = false
 }
-config =  {
+const base = {
+
+}
+
+let nodeConfig =  {
     entry: {
         app: ["babel-polyfill", path.resolve(__dirname, '../src/app.js')]
     },
@@ -53,4 +57,6 @@ if(!DEV){
    config.entry.start = path.resolve(__dirname, '../pm2/index.js')
 }
 
-module.exports = config
+module.exports = {
+  nodeConfig
+}

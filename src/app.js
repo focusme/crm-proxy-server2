@@ -13,8 +13,11 @@ const apiVerify = require('./middleware/apiVerify')
 const loginVerify = require('./middleware/loginVerify')
 const proxy = require('./middleware/proxy.js')
 
-// 路由
+// 页面路由
+import Views from './routes/view'
+// node路由
 import Common from './routes/common'
+
 
 // 跨域处理
 app.use(convert(cors({
@@ -29,7 +32,9 @@ app.use(parse);
 app.use(apiVerify)
 // app.use(changeBody)
 
-ApiRouter.use('/',Common.routes(), Common.allowedMethods());
+ApiRouter.use('/api',Common.routes(), Common.allowedMethods());
+ApiRouter.use('*',Views.routes(), Views.allowedMethods());
+
 
 app.use(ApiRouter.routes());
 

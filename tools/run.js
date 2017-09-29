@@ -1,11 +1,11 @@
 const webpack = require('webpack');
-const webpackConfig = require('./webpack.config');
+const {nodeConfig} = require('./webpack.config');
 const path = require('path');
 const cp = require('child_process')
 
 function run(callback) {
   return new Promise((resolve, reject)=>{
-    webpack(webpackConfig).watch({
+    webpack(nodeConfig).watch({
       aggregateTimeout: 300,
       poll: 1000,
       ignored: ["node_modules", "*.md","*.json",'pm2','build/'],
