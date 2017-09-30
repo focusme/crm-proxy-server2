@@ -11,12 +11,12 @@ export function createRouter() {
     routes: [{
       path: '/',
       component: () => {
-        return import ( /* webpackChunkName : "home" */ `../home/home.vue`)
+        return import ( /* webpackChunkName : "home" */ `./home/home.vue`)
       }
     },{
       path: '/two',
       component: () => {
-        return import ( /* webpackChunkName : "two" */ `../two/two.vue`)
+        return import ( /* webpackChunkName : "two" */ `./two/two.vue`)
       }
     }]
   })

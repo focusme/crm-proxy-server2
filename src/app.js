@@ -4,6 +4,7 @@ const app = new Koa();
 const cors = require('koa-cors');
 const convert = require('koa-convert')
 const ApiRouter = new Router();
+const serve = require('koa-static')
 const config = require('./config.js')
 // 中间件
 const parse = require('./middleware/parse.js')
@@ -18,15 +19,14 @@ import Views from './routes/view'
 // node路由
 import Common from './routes/common'
 
-
 // 跨域处理
 app.use(convert(cors({
   origin:'',
   methods:['GET', 'POST']
 })));
 
-app.use(logger);
-app.use(parse);
+// app.use(logger);
+// app.use(parse);
 
 // 对所有请求验证权限
 app.use(apiVerify)

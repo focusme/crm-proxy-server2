@@ -8,12 +8,13 @@
 export default {
   data () {
     return {
-      msg: 'this is Two !',
+      msg: 'this is 尽快了解了解了 !',
       id: ''
     }
   },
+  title: '标题',
+  meta: 'Coding.Art 代码的艺术',
   components: {
-    chartPie
   },
   computed: {
 

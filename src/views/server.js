@@ -1,5 +1,5 @@
 import { createApp } from './app'
-const isDev = process.env.NODE_ENV !== 'production'
+const isDev = __DEV__
 
 export default context => {
   return new Promise((resolve, reject) => {
@@ -7,11 +7,15 @@ export default context => {
     let {app, router} = createApp()
 
 
-    const {url, isPhone, userInfo, oauth} = context
+    const {url} = context
     const fullPath = router.resolve(url).route.fullPath
 
     if (fullPath !== url) {
       reject({ url: fullPath })
+    }
+
+    if(__DEV__){
+      console.log('view =====>',url);
     }
 
     router.push(url)
@@ -27,8 +31,9 @@ export default context => {
         store,
         route: router.currentRoute
       }))).then(() => {
-        isDev && console.log(`data pre-fetch: ${Date.now() - s}ms`)
-        // context.state = store.state
+        if(__DEV__){
+          console.log(`          data pre-fetch: ${Date.now() - s}ms`)
+        }
         resolve(app)
       }).catch(reject)
     }, reject)
