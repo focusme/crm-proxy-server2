@@ -24,8 +24,8 @@ const base = {
     false :
     '#cheap-module-source-map',
   output: {
-    path: resolve('../build/server'),
-    publicPath: '/server/',
+    path: resolve('../build/chunks'),
+    publicPath: '/chunks/',
     filename: '[name].[chunkhash].js',
     chunkFilename: '[name].[chunkhash].js'
   },
@@ -91,7 +91,7 @@ const base = {
       })
     ] :
     [
-      new FriendlyErrorsPlugin()
+      // new FriendlyErrorsPlugin()
     ]
 }
 
@@ -141,6 +141,7 @@ const serverConfig = merge(base, {
   devtool: '#source-map',
   entry: resolve('../src/views/server.js'),
   output: {
+    path: resolve('../build/server'),
     filename: 'server-bundle.js',
     libraryTarget: 'commonjs2'
   },
@@ -181,7 +182,7 @@ let nodeConfig = {
   resolve: {
     modules: ['node_modules', 'src']
   },
- externals: ["./server/server.json", './server/client.json',nodeExternals({importType:'commonjs',whitelist:[]})],
+ externals: ["./server/server.json", './chunks/client.json',nodeExternals({importType:'commonjs',whitelist:[]})],
   node: {
     console: true,
     global: true,

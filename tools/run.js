@@ -6,88 +6,33 @@ const {
 } = require('./webpack.config');
 const path = require('path');
 const cp = require('child_process')
+const rimraf = require('rimraf')
 
-// webpack(serverConfig).watch({
-//   aggregateTimeout: 300,
-//   poll: 1000,
-//   ignored: ["node_modules", "*.md","*.json",'pm2','build/'],
-// }, (err, stats) => {
-//
-//   if (err) {
-//     console.log(err);
-//   }
-//   function onStdOut(data) {
-//     const time = new Date().toTimeString();
-//
-//     process.stdout.write(time.replace(/.*(\d{2}:\d{2}:\d{2}).*/, '[$1] '));
-//     process.stdout.write(data);
-//   }
-//   if (server) {
-//     server.kill('SIGTERM');
-//   }
-//   server = cp.spawn('node', ['./build/app.js']);
-//   // log
-//   server.stdout.on('data', onStdOut);
-//   server.stderr.on('data', x => { process.stderr.write(x)});
-//   process.stdout.write(stats.toString({
-//     colors: true,
-//     modules: false,
-//     children: false,
-//     chunks: false,
-//     chunkModules: false
-//   }) + '\n\n')
-// });
-//
-// webpack(clientConfig).watch({
-//   aggregateTimeout: 300,
-//   poll: 1000,
-//   ignored: ["node_modules", "*.md","*.json",'pm2','build/'],
-// }, (err, stats) => {
-//
-//   if (err) {
-//     console.log(err);
-//   }
-//   function onStdOut(data) {
-//     const time = new Date().toTimeString();
-//
-//     process.stdout.write(time.replace(/.*(\d{2}:\d{2}:\d{2}).*/, '[$1] '));
-//     process.stdout.write(data);
-//   }
-//   if (server) {
-//     server.kill('SIGTERM');
-//   }
-//   server = cp.spawn('node', ['./build/app.js']);
-//   // log
-//   server.stdout.on('data', onStdOut);
-//   server.stderr.on('data', x => { process.stderr.write(x)});
-//
-//   process.stdout.write(stats.toString({
-//     colors: true,
-//     modules: false,
-//     children: false,
-//     chunks: false,
-//     chunkModules: false
-//   }) + '\n\n')
-// });
-
+const clean = (pattern) =>{
+  return new Promise((resolve,reject) =>{
+    rimraf(pattern, {glob: {nosort: true,dot: true,ignore: ['build/.git']}}, (err, result) => {
+      err ? reject(err) : resolve(result)
+    })
+  })
+}
 
 // 启动服务
-let server;
+let server,flag = false;
 // 回调重启服务
-// const callback = () => {
-//   if (server) {
-//     server.kill('SIGTERM');
-//   }
-//   server = cp.spawn('node', ['./build/app.js']);
-//   server.stdout.on('data', (data) => {
-//     const time = new Date().toTimeString();
-//     process.stdout.write(time.replace(/.*(\d{2}:\d{2}:\d{2}).*/, '[$1] '));
-//     process.stdout.write(data);
-//   });
-//   server.stderr.on('data', x => {
-//     process.stderr.write(x)
-//   });
-// }
+const restart = () => {
+  if (server) {
+    server.kill('SIGTERM');
+  }
+  server = cp.spawn('node', ['./build/app.js']);
+  server.stdout.on('data', (data) => {
+    const time = new Date().toTimeString();
+    process.stdout.write(time.replace(/.*(\d{2}:\d{2}:\d{2}).*/, '[$1] '));
+    process.stdout.write(data);
+  });
+  server.stderr.on('data', x => {
+    process.stderr.write(x)
+  });
+}
 
 process.on('exit', () => {
   if (server) {
@@ -96,89 +41,65 @@ process.on('exit', () => {
 });
 
 
-function watch() {
-  let compiler = new webpack(nodeConfig);
+function watch(config, callBack, rm) {
+  return new Promise((resolve, reject) => {
+    let compiler = new webpack(config);
 
-  const callback = (err, stats) => {
-    if (err) {
-      console.log(err);
-    }
-    process.stdout.write(stats.toString({
-      colors: true,
-      modules: false,
-      children: false,
-      chunks: false,
-      chunkModules: false
-    }) + '\n\n')
-  };
+    const callback = (err, stats) => {
+      if (err) {
+        console.log(err);
+        reject()
+      }
+      resolve()
+    };
 
-  let watching = compiler.watch({
-    aggregateTimeout: 300,
-    poll: 1000,
-    ignored: ["node_modules", "*.md", "*.json", 'pm2', 'build/'],
-  }, callback);
+    let watching = compiler.watch({
+      aggregateTimeout: 300,
+      poll: 1000,
+      ignored: ["node_modules", "*.md", "*.json", 'pm2', 'build/'],
+    }, callback);
 
-  compiler.plugin("watch-run", function (compilation,next) {
-    console.log(1231231313,next)
-    next();
-  });
-  compiler.plugin('done', (stats) => {
-    console.info(stats.toString({
-      colors: true,
-      modules: false,
-      children: false,
-      chunks: false,
-      chunkModules: false
-    }));
-  });
-  // compiler.plugin("failed", function (compilation, callback) {
-  //   console.log('failed');
-  // });
-  compiler.plugin("invalid", (stats) => {
-    console.log('invalid');
-    console.info(stats.toString({
-      colors: true,
-      modules: false,
-      children: false,
-      chunks: false,
-      chunkModules: false
-    }));
-  });
+    compiler.plugin("watch-run", function (compilation, next) {
+      rm&&rm()
+      next();
+    });
+    compiler.plugin('done', (stats) => {
+      process.stdout.write(stats.toString({
+        colors: true,
+        modules: false,
+        children: false,
+        chunks: false,
+        chunkModules: false
+      }) + '\n\n')
+      callBack && callBack()
 
+      // 重启服务
+      flag&&restart()
+    });
+  })
 }
 
+const run = async ()=>{
+  await watch(clientConfig,()=>{
+    console.log('build client success');
+  },async ()=>{
+    // 删除文件
+    await clean('build/chunks/*')
+  })
 
-// function run(callback) {
-//   return new Promise((resolve, reject) => {
-//     webpack(nodeConfig).watch({
-//       aggregateTimeout: 300,
-//       poll: 1000,
-//       ignored: ["node_modules", "*.md", "*.json", 'pm2', 'build/'],
-//     }, (err, stats) => {
+  await watch(serverConfig,()=>{
+    console.log('build server success');
+  })
+  await watch(nodeConfig,()=>{
+    flag = true
+    console.log('build node success');
+  })
+}
+clean('build/*').then((value) => {
+  run()
+})
+
+// watch(()=>{
+//   console.log('build success');
 //
-//       if (err) {
-//         console.log(err);
-//         reject();
-//       }
-//       process.stdout.write(stats.toString({
-//         colors: true,
-//         modules: false,
-//         children: false,
-//         chunks: false,
-//         chunkModules: false
-//       }) + '\n\n')
-//
-//       resolve()
-//       callback();
-//     });
-//   })
-// }
-
-watch();
-
-// // 启动项目
-// run(callback).then(() => {
-//   console.log('=============  start success  ============');
-// }).catch((err) => {
-//   console.log(err);
-// })
+// });

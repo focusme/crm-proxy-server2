@@ -5,7 +5,7 @@ const fs = require('fs')
 const path = require('path')
 const { createBundleRenderer } = require('vue-server-renderer')
 const bundle = require("./server/server.json")
-const clientManifest = require("./server/client.json")
+const clientManifest = require("./chunks/client.json")
 import Error from '../template/error'
 const resolve = file => path.resolve(__dirname, file)
 const template = fs.readFileSync(resolve('./template/index.html'), 'utf-8')

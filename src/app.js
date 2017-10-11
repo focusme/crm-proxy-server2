@@ -13,10 +13,8 @@ const changeBody = require('./middleware/return.js')
 const apiVerify = require('./middleware/apiVerify')
 const loginVerify = require('./middleware/loginVerify')
 const proxy = require('./middleware/proxy.js')
-
 // 页面路由
 import Views from './routes/view'
-
 // node路由
 import Common from './routes/common'
 
@@ -26,7 +24,6 @@ app.use(convert(cors({
   methods:['GET', 'POST']
 })));
 
-
 // app.use(logger);
 // app.use(parse);
 
@@ -34,6 +31,7 @@ app.use(convert(cors({
 app.use(apiVerify)
 
 // app.use(changeBody)
+
 
 
 ApiRouter.use('/api',Common.routes(), Common.allowedMethods());
