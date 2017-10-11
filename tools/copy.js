@@ -4,8 +4,9 @@ const  pkg = require('../package.json') ;
 const format = require('./lib/format.js')
 
 async function copy() {
-  // await makeDir('build');
+
   console.log(`${format(new Date())}  start copy`);
+
   await Promise.all([
     writeFile('build/package.json', JSON.stringify({
       private: true,
@@ -16,8 +17,11 @@ async function copy() {
         start: 'node ./start.js && pm2 list',
       },
     }, null, 2)),
+
     copyFile('yarn.lock', 'build/yarn.lock'),
   ]);
+
+  
   console.log(`${format(new Date())}  Finished copy`);
 }
 

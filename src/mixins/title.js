@@ -11,7 +11,7 @@ const serverTitleMixin = {
   created () {
     const title = getTitle(this)
     if (title) {
-      this.$ssrContext.title = ` ${title} | Coding.Art `
+      this.$ssrContext.title = ` ${title} | koa2-vue-ssr `
     }
   }
 }
@@ -20,7 +20,7 @@ const clientTitleMixin = {
   mounted () {
     const title = getTitle(this)
     if (title) {
-      document.title = ` ${title} | Coding.Art `
+      document.title = ` ${title} | | koa2-vue-ssr `
     }
   }
 }

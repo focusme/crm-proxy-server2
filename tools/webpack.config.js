@@ -130,7 +130,7 @@ const clientConfig = merge(base, {
     new VueSSRClientPlugin({
       filename: 'client.json'
     }),
-    ... isProd ? [new BundleAnalyzerPlugin()] : []
+    // ... isProd ? [new BundleAnalyzerPlugin()] : []
   ]
 })
 
@@ -220,6 +220,7 @@ let nodeConfig = {
 if (isProd) {
   nodeConfig.entry.start = path.resolve(__dirname, '../pm2/index.js')
 }
+// console.log(nodeConfig);
 
 module.exports = {
   nodeConfig,
