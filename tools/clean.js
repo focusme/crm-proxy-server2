@@ -1,15 +1,12 @@
-const { cleanDir } = require('./lib/fs');
-
-const format = require('./lib/format.js')
+const {
+  format,
+  cleanFile
+} = require('kin-toolkits').tools
 
 async function clean() {
   console.log(`${format(new Date())}  start remove`);
   await Promise.all([
-    cleanDir('build/*', {
-      nosort: true,
-      dot: true,
-      ignore: ['build/.git'],
-    }),
+    cleanFile('build/*'),
   ]);
   console.log(`${format(new Date())}  Finished remove`);
 }

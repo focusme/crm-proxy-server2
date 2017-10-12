@@ -2814,6 +2814,10 @@ keygrip@~1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/keygrip/-/keygrip-1.0.1.tgz#b02fa4816eef21a8c4b35ca9e52921ffc89a30e9"
 
+kin-toolkits@^1.0.2:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/kin-toolkits/-/kin-toolkits-1.0.3.tgz#af3208dc37a68803a3ba24d4a9fee396bde6a722"
+
 kind-of@^3.0.2:
   version "3.2.2"
   resolved "https://registry.yarnpkg.com/kind-of/-/kind-of-3.2.2.tgz#31ea21a734bab9bbb0f32466d893aea51e4a3c64"

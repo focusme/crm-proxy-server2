@@ -86,7 +86,6 @@ const run = async ()=>{
     // 删除文件
     await clean('build/chunks/*')
   })
-
   await watch(serverConfig,()=>{
     console.log('build server success');
   })
@@ -98,8 +97,3 @@ const run = async ()=>{
 clean('build/*').then((value) => {
   run()
 })
-
-// watch(()=>{
-//   console.log('build success');
-//
-// });
