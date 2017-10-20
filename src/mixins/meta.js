@@ -7,6 +7,7 @@ function getMeta (vm) {
   }
 }
 
+
 const serverMetaMixin = {
   created () {
     const meta = getMeta(this)
