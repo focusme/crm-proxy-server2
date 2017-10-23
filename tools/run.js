@@ -8,7 +8,8 @@ const {
 const {
   watch,
   format,
-  cleanFile
+  cleanFile,
+  copyFile
 } = require('kin-toolkits').tools
 
 
@@ -60,5 +61,7 @@ const run = async ()=>{
 }
 
 cleanFile('build/*').then((value) => {
-  run()
+  console.log(123);
+  await copyFile('./template/index.template.html','./dist/template/index.template.html')
+  // run()
 })
