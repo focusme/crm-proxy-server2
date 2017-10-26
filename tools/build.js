@@ -1,26 +1,42 @@
-const webpack = require('webpack');
 const webpackConfig = require('./webpack.config');
-const ora = require('ora')
+const path = require('path')
+const pkg = require('../package.json');
 
-const format = require('./lib/format.js')
+const {
+  format,
+  cleanFile,
+  copyFile,
+  mkdir,
+  writeFile,
+  build
+} = require('kin-toolkits').tools
+const resolve = file => path.resolve(__dirname, file)
 
-console.log(`${format(new Date())}  start build`);
 
-const spinner = ora('building...')
-spinner.start()
-webpack(webpackConfig).run((err, stats) => {
-  spinner.stop()
-  if (err) {
-    console.log(err);
-  }
-  process.stdout.write(stats.toString({
-    colors: true,
-    modules: false,
-    children: false,
-    chunks: false,
-    chunkModules: false
-  }) + '\n\n')
+
+async function run() {
+  console.log(`${format(new Date())}  start build \n`);
+
+  await build(webpackConfig).then(() => {
+    console.log(' build success !\n\n');
+  }).catch((err) => {
+    console.log('error:', err);
+  })
 
   console.log(`${format(new Date())}  Finished build`);
+}
 
-});
+cleanFile(resolve('../build/*')).then(async(value) => {
+  await writeFile(resolve('../build/package.json'), JSON.stringify({
+    private: true,
+    engines: pkg.engines,
+    dependencies:  pkg.dependencies,
+    scripts: {
+      start: 'node ./start.js && pm2 list'
+    },
+  }, null, 2)),
+
+  await copyFile(resolve('../yarn.lock'), resolve('../build/yarn.lock'))
+
+  run()
+})

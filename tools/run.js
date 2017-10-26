@@ -1,59 +1,53 @@
-const webpack = require('webpack');
 const webpackConfig = require('./webpack.config');
 const path = require('path');
 const cp = require('child_process')
-
-function run(callback) {
-  return new Promise((resolve, reject)=>{
-    webpack(webpackConfig).watch({
-      aggregateTimeout: 300,
-      poll: 1000,
-      ignored: ["node_modules", "*.md","*.json",'pm2','build/'],
-    }, (err, stats) => {
-
-      if (err) {
-        console.log(err);
-        reject();
-      }
-      process.stdout.write(stats.toString({
-        colors: true,
-        modules: false,
-        children: false,
-        chunks: false,
-        chunkModules: false
-      }) + '\n\n')
-
-      resolve()
-      callback();
-    });
-  })
-}
-let server;
+const resolve = file => path.resolve(__dirname, file)
+const {
+  watch,
+  format,
+  cleanFile,
+  copyFile
+} = require('kin-toolkits').tools
 
 
-// 启动项目
-run(()=>{
-  function onStdOut(data) {
-    const time = new Date().toTimeString();
+// 启动服务
+let server,flag = false;
 
-    process.stdout.write(time.replace(/.*(\d{2}:\d{2}:\d{2}).*/, '[$1] '));
-    process.stdout.write(data);
-  }
+// 回调重启服务
+const restart = () => {
   if (server) {
     server.kill('SIGTERM');
   }
   server = cp.spawn('node', ['./build/app.js']);
-  // log
-  server.stdout.on('data', onStdOut);
-  server.stderr.on('data', x => { process.stderr.write(x)});
-}).then(()=>{
-   console.log('=============  start success  ============');
-}).catch((err) => {
-  console.log(err);
-})
+  server.stdout.on('data', (data) => {
+    const time = new Date().toTimeString();
+    process.stdout.write(time.replace(/.*(\d{2}:\d{2}:\d{2}).*/, '[$1] '));
+    process.stdout.write(data);
+  });
+  server.stderr.on('data', x => {
+    process.stderr.write(x)
+  });
+}
 
 process.on('exit', () => {
   if (server) {
     server.kill('SIGTERM');
   }
 });
+
+const run = async ()=>{
+  await watch(webpackConfig,()=>{
+    flag = true
+    console.log('build node success');
+    restart();
+  },async ()=>{
+    await cleanFile(resolve('../build/*')).then((value) => {
+       console.log('remove build ...');
+    })
+  })
+
+}
+
+cleanFile(resolve('../build/*')).then((value) => {
+  run()
+})
