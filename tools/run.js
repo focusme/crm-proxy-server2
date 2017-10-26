@@ -1,4 +1,5 @@
-
+const path = require('path');
+const cp = require('child_process')
 const {
   nodeConfig,
   serverConfig,
@@ -11,11 +12,8 @@ const {
   cleanFile,
   copyFile
 } = require('kin-toolkits').tools
+const resolve = file => path.resolve(__dirname, file)
 
-
-const path = require('path');
-const cp = require('child_process')
-const rimraf = require('rimraf')
 
 // 启动服务
 let server,flag = false;
@@ -60,8 +58,6 @@ const run = async ()=>{
 
 }
 
-cleanFile('build/*').then((value) => {
-  console.log(123);
-  await copyFile('./template/index.template.html','./dist/template/index.template.html')
-  // run()
+cleanFile('build/*').then(async (value) => {
+  run()
 })

@@ -11,13 +11,12 @@ const VueSSRClientPlugin = require('vue-server-renderer/client-plugin')
 const {BundleAnalyzerPlugin} = require('webpack-bundle-analyzer')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 
-
+const resolve = file => path.resolve(__dirname, file)
 let isProd = false
 if (process.argv.includes('--release')) {
   isProd = true
 }
 
-const resolve = file => path.resolve(__dirname, file)
 
 const base = {
   devtool: isProd ?
@@ -193,12 +192,9 @@ let nodeConfig = {
     setImmediate: true
   },
   module: {
-    loaders: [{
+    rules: [{
       test: /\.js$/,
       loader: 'babel-loader',
-      query: {
-        presets: ['es2015', 'stage-2']
-      },
       exclude: /node_modules/
     }]
   },
@@ -221,7 +217,6 @@ let nodeConfig = {
 if (isProd) {
   nodeConfig.entry.start = path.resolve(__dirname, '../pm2/index.js')
 }
-// console.log(nodeConfig);
 
 module.exports = {
   nodeConfig,

@@ -1,18 +1,12 @@
-var pm2 = require('pm2');
-const config = require(`./config`)
+import nodeStart from 'kin-toolkits/pm2/index.js';
 
-/**
- * 启动pm2
- * @param  {[type]} err [description]
- * @return {[type]}     [description]
- */
-pm2.connect(function(err) {
-  if (err) {
-    console.error(err);
-    process.exit(2);
+const pkg = require('../package.json')
+const config ={
+  "name"        : pkg.name,
+  "script"      : "./app.js",
+  "watch"       : false,
+  "env": {
+      "PORT": "9090"
   }
-  pm2.start(config, function(err, apps) {
-    pm2.disconnect();
-    if (err) throw err
-  });
-});
+}
+nodeStart(config)
